@@ -2,10 +2,17 @@
 
 import * as React from "react";
 import { Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { differenceInCalendarDays, format } from "date-fns";
 import type { DateRange } from "react-day-picker";
-import { CalendarDays, CalendarRange, ChevronDown, X } from "lucide-react";
+import {
+  CalendarDays,
+  CalendarRange,
+  ChevronDown,
+  Plus,
+  X,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -150,7 +157,7 @@ function HomePageContent() {
   );
 
   return (
-    <main className="flex min-h-dvh flex-1 flex-col px-6 pb-10 pt-8">
+    <main className="relative flex min-h-dvh flex-1 flex-col px-6 pb-10 pt-8">
       <header className="space-y-1">
         <p className="text-sm text-muted-foreground">{timeBasedSalutation()},</p>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">
@@ -423,6 +430,22 @@ function HomePageContent() {
       </section>
 
       <HomeExpenseSummary />
+
+      <Button
+        asChild
+        size="icon-lg"
+        className={cn(
+          "fixed z-50 size-14 shrink-0 rounded-full shadow-lg",
+          "bottom-[max(1.5rem,env(safe-area-inset-bottom,0px))]",
+          "right-[max(1.5rem,env(safe-area-inset-right,0px))]",
+          "hover:scale-105 hover:shadow-xl active:scale-95",
+          "transition-transform duration-150"
+        )}
+      >
+        <Link href="/add-expense" aria-label="Add expense">
+          <Plus className="size-7" strokeWidth={2.25} aria-hidden />
+        </Link>
+      </Button>
     </main>
   );
 }
