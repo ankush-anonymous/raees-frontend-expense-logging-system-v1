@@ -1,10 +1,12 @@
 "use client";
 
 import type { FormEvent } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function OtpPage() {
+function OtpPageContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
   const name = searchParams.get("name");
@@ -19,7 +21,11 @@ export default function OtpPage() {
       return;
     }
 
-    alert("OTP submitted. Connect this screen with your backend verification API.");
+    const next = new URLSearchParams();
+    if (email) next.set("email", email);
+    if (name) next.set("name", name);
+    if (mode) next.set("mode", mode);
+    router.push(`/home?${next.toString()}`);
   };
 
   return (
@@ -82,5 +88,19 @@ export default function OtpPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function OtpPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-dvh flex-1 items-center justify-center px-6">
+          <p className="text-sm text-muted-foreground">Loading…</p>
+        </main>
+      }
+    >
+      <OtpPageContent />
+    </Suspense>
   );
 }
